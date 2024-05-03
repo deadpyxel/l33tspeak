@@ -33,3 +33,23 @@ func TestLeetSpeak(t *testing.T) {
 		}
 	})
 }
+
+func TestUnleetSpeak(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"h3ll0", "hello"},
+		{"w0rld", "world"},
+		{"th15 15 4 t35t", "this is a test"},
+		{"c0d1ng", "coding"},
+		{"l33t", "leet"},
+	}
+
+	for _, test := range tests {
+		result := unleetSpeak(test.input)
+		if result != test.expected {
+			t.Errorf("unleetSpeak(%s) = %s; want %s", test.input, result, test.expected)
+		}
+	}
+}
