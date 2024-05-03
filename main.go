@@ -10,6 +10,29 @@ import (
 	"time"
 )
 
+func unleetSpeak(input string) string {
+	replacements := map[string]string{
+		"4": "a",
+		"3": "e",
+		"1": "i",
+		"0": "o",
+		"5": "s",
+		"7": "t",
+	}
+
+	var result strings.Builder
+	for _, ch := range input {
+		chStr := string(ch)
+		if replacement, ok := replacements[chStr]; ok {
+			result.WriteString(replacement)
+			continue
+		}
+		result.WriteString(chStr)
+	}
+
+	return result.String()
+}
+
 func leetSpeak(input string, replPerc float64, randSeed int64) string {
 	replacements := map[string]string{
 		"a": "4",
@@ -44,6 +67,7 @@ func leetSpeak(input string, replPerc float64, randSeed int64) string {
 
 func main() {
 	replacementPerc := flag.Float64("p", 1.0, "Percentage of characters to replace with l33tspeak")
+	isDecoding := flag.Bool("d", false, "Set this flag if you want to decode a l33tspeak string")
 	flag.Parse()
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -52,5 +76,12 @@ func main() {
 		input += scanner.Text() + " "
 	}
 
-	fmt.Println(leetSpeak(input, *replacementPerc, time.Now().UnixNano()))
+	result := ""
+	if *isDecoding {
+		result = unleetSpeak(input)
+	} else {
+		result = leetSpeak(input, *replacementPerc, time.Now().UnixNano())
+	}
+
+	fmt.Println(result)
 }
