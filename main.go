@@ -65,16 +65,21 @@ func leetSpeak(input string, replPerc float64, randSeed int64) string {
 	return result.String()
 }
 
-func main() {
-	replacementPerc := flag.Float64("p", 1.0, "Percentage of characters to replace with l33tspeak")
-	isDecoding := flag.Bool("d", false, "Set this flag if you want to decode a l33tspeak string")
-	flag.Parse()
-
+func readInput() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
 	for scanner.Scan() {
 		input += scanner.Text() + " "
 	}
+	return input
+}
+
+func main() {
+	replacementPerc := flag.Float64("p", 1.0, "Percentage of characters to replace with l33tspeak")
+	isDecoding := flag.Bool("d", false, "Set this flag if you want to decode a l33tspeak string")
+	flag.Parse()
+
+	input := readInput()
 
 	result := ""
 	if *isDecoding {
