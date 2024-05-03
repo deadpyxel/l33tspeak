@@ -7,9 +7,10 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
-func leetSpeak(input string, replPerc float64) string {
+func leetSpeak(input string, replPerc float64, randSeed int64) string {
 	replacements := map[string]string{
 		"a": "4",
 		"e": "3",
@@ -19,18 +20,20 @@ func leetSpeak(input string, replPerc float64) string {
 		"t": "7",
 	}
 
+	r := rand.New(rand.NewSource(int64(randSeed)))
+
 	input = strings.ToLower(input)
 
 	var result strings.Builder
 	for _, ch := range input {
-		if rand.Float64() < replPerc {
+		if r.Float64() < replPerc {
 			if replacement, ok := replacements[string(ch)]; ok {
 				result.WriteString(replacement)
 				continue
 			}
 		}
 		chStr := string(ch)
-		if rand.Intn(2) == 0 {
+		if r.Intn(2) == 0 {
 			chStr = strings.ToUpper(chStr)
 		}
 		result.WriteString(chStr)
@@ -49,5 +52,5 @@ func main() {
 		input += scanner.Text() + " "
 	}
 
-	fmt.Println(leetSpeak(input, *replacementPerc))
+	fmt.Println(leetSpeak(input, *replacementPerc, time.Now().UnixNano()))
 }
