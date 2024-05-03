@@ -48,3 +48,16 @@ func TestUnleetSpeak(t *testing.T) {
 		})
 	}
 }
+
+// Benchmark tests
+func BenchmarkLeetSpeak(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		leetSpeak("hello world", 1.0, 1)
+	}
+}
+
+func BenchmarkUnleetSpeak(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		unleetSpeak("h3ll0 w0rld")
+	}
+}
