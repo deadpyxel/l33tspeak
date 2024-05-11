@@ -33,7 +33,7 @@ func unleetSpeak(input string) string {
 	return result.String()
 }
 
-func leetSpeak(input string, replPerc float64, randSeed int64) string {
+func leetSpeak(input string, ignoreList string, replPerc float64, randSeed int64) string {
 	replacements := map[string]string{
 		"a": "4",
 		"e": "3",
@@ -48,7 +48,15 @@ func leetSpeak(input string, replPerc float64, randSeed int64) string {
 	input = strings.ToLower(input)
 
 	var result strings.Builder
+	var ignoreListSlice []string
+	if ignoreList != "" {
+		ignoreListSlice = createIgnoreList(ignoreList)
+	}
 	for _, ch := range input {
+		if isOnIgnoreList(string(ch), ignoreListSlice) {
+			result.WriteString(string(ch))
+			continue
+		}
 		if r.Float64() < replPerc {
 			if replacement, ok := replacements[string(ch)]; ok {
 				result.WriteString(replacement)
@@ -74,9 +82,23 @@ func readInput() string {
 	return input
 }
 
+func createIgnoreList(ignoreList string) []string {
+	return strings.Split(ignoreList, ",")
+}
+
+func isOnIgnoreList(ch string, ignoreList []string) bool {
+	for _, igCh := range ignoreList {
+		if igCh == ch {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 	replacementPerc := flag.Float64("p", 1.0, "Percentage of characters to replace with l33tspeak")
 	isDecoding := flag.Bool("d", false, "Set this flag if you want to decode a l33tspeak string")
+	ignoreList := flag.String("ignore", "", "Comma separated list of characters to ignore")
 	flag.Parse()
 
 	input := readInput()
@@ -85,7 +107,7 @@ func main() {
 	if *isDecoding {
 		result = unleetSpeak(input)
 	} else {
-		result = leetSpeak(input, *replacementPerc, time.Now().UnixNano())
+		result = leetSpeak(input, *ignoreList, *replacementPerc, time.Now().UnixNano())
 	}
 
 	fmt.Println(result)
