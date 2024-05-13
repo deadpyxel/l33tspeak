@@ -101,7 +101,13 @@ func main() {
 	ignoreList := flag.String("ignore", "", "Comma separated list of characters to ignore")
 	flag.Parse()
 
-	input := readInput()
+	var input string
+	// If we have passed the input string as a command argument, prioritize that. Else use STDIN.
+	if len(flag.Args()) > 0 {
+		input = flag.Arg(0)
+	} else {
+		input = readInput()
+	}
 
 	result := ""
 	if *isDecoding {
