@@ -106,6 +106,17 @@ func main() {
 	if len(flag.Args()) > 0 {
 		input = flag.Arg(0)
 	} else {
+		stat, err := os.Stdin.Stat()
+		if err != nil {
+			fmt.Println("Error checking for STDIN: ", err)
+			os.Exit(1)
+		}
+		// If STDIN is not a pipe or a file, it's probably an interactive input
+		if (stat.Mode() & os.ModeCharDevice) != 0 {
+			fmt.Println("No input provided. Please provide input via argument or STDIN")
+			flag.Usage()
+			os.Exit(1)
+		}
 		input = readInput()
 	}
 
