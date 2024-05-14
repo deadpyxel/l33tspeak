@@ -24,7 +24,7 @@ func TestLeetSpeak(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := leetSpeak(tt.input, tt.ignoreList, tt.replPerc, tt.randSeed); got != tt.expected {
+			if got := LeetSpeak(tt.input, tt.ignoreList, tt.replPerc, tt.randSeed); got != tt.expected {
 				t.Errorf("Expected [%v] for leetSpeak(\"%v\", %v, %v), got %v instead.", tt.expected, tt.input, tt.replPerc, tt.randSeed, got)
 			}
 		})
@@ -45,7 +45,7 @@ func TestUnleetSpeak(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := unleetSpeak(tt.input); got != tt.expected {
+			if got := UnleetSpeak(tt.input); got != tt.expected {
 				t.Errorf("unleetSpeak() = %v, want %v", got, tt.expected)
 			}
 		})
@@ -76,12 +76,12 @@ func TestCreateIgnoreList(t *testing.T) {
 func BenchmarkLeetSpeak(b *testing.B) {
 	b.Run("Simple case without ignores", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			leetSpeak("hello world", "", 1.0, 1)
+			LeetSpeak("hello world", "", 1.0, 1)
 		}
 	})
 	b.Run("Simple case with ignores", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			leetSpeak("hello world", "h,e,l,o,w,r,d", 1.0, 1)
+			LeetSpeak("hello world", "h,e,l,o,w,r,d", 1.0, 1)
 		}
 	})
 }
@@ -89,7 +89,7 @@ func BenchmarkLeetSpeak(b *testing.B) {
 func BenchmarkUnleetSpeak(b *testing.B) {
 	b.Run("Simple case", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			unleetSpeak("h3ll0 w0rld")
+			UnleetSpeak("h3ll0 w0rld")
 		}
 	})
 }

@@ -10,7 +10,20 @@ import (
 	"time"
 )
 
-func unleetSpeak(input string) string {
+// UnleetSpeak converts leetspeak to regular English.
+// It replaces numbers in the input string with their corresponding letters:
+// 4 -> a, 3 -> e, 1 -> i, 0 -> o, 5 -> s, 7 -> t.
+// All other characters are left unchanged.
+// For example, "h3llo w0r1d" becomes "hello world".
+//
+// Parameters
+//
+//	input: the string to convert from leetspeak to English.
+//
+// Returns:
+//
+//	the converted string.
+func UnleetSpeak(input string) string {
 	replacements := map[string]string{
 		"4": "a",
 		"3": "e",
@@ -33,7 +46,26 @@ func unleetSpeak(input string) string {
 	return result.String()
 }
 
-func leetSpeak(input string, ignoreList string, replPerc float64, randSeed int64) string {
+// LeetSpeak converts a regular English string into leetspeak.
+// It replaces certain characters with numbers based on a predefined map:
+// a -> 4, e -> 3, i -> 1, o -> 0, s -> 5, t -> 7.
+// The conversion process can be customized with the following parameters:
+// - ignoreList: a comma-separated list of characters to ignore during conversion.
+// - replPerc: the percentage of characters to replace with their leetspeak equivalents.
+// - randSeed: a seed for the random number generator used to decide whether to replace a character.
+// The function also randomly capitalizes characters to add variability to the leetspeak output.
+//
+// Parameters:
+//
+//	input: the string to convert into leetspeak.
+//	ignoreList: a string of characters to ignore during conversion, separated by commas.
+//	replPerc: a float64 representing the percentage of characters to replace (0.0 to 1.0).
+//	randSeed: an int64 seed for the random number generator.
+//
+// Returns:
+//
+//	the converted leetspeak string.
+func LeetSpeak(input string, ignoreList string, replPerc float64, randSeed int64) string {
 	replacements := map[string]string{
 		"a": "4",
 		"e": "3",
@@ -122,9 +154,9 @@ func main() {
 
 	result := ""
 	if *isDecoding {
-		result = unleetSpeak(input)
+		result = UnleetSpeak(input)
 	} else {
-		result = leetSpeak(input, *ignoreList, *replacementPerc, time.Now().UnixNano())
+		result = LeetSpeak(input, *ignoreList, *replacementPerc, time.Now().UnixNano())
 	}
 
 	fmt.Println(result)
